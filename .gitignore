@@ -5,3 +5,4 @@ params/*
 test/*
 tmp/*
 .idea/*
+slurm-*
