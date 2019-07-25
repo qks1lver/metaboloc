@@ -1,14 +1,15 @@
-# TonKnows
-#### A simple network miner
-Very much in ALPHA right now
+# MetaboLoc
+#### Metabolic Network Compartmentalization Classifier
 
 Python 3
 
 ### What is this for?
+This is part of the **COMET (COmpartmentalization of METabolic network) PIPELINE**.
+
 I have a network with **nodes** connected through **links**. Some of the nodes I know have property **X** and some I
 know have property **Y**. But I don't know them all, so can I predict the properties (X, Y, or both) of the unknown nodes?
 
-**TonKnows** is a multilabel multiclass classifier designed to shed some light on the characteristics of your network
+**MetaboLoc** is a multilabel multiclass classifier designed to shed some light on the characteristics of your network
 using very simple base classifiers to ask understandable questions.
 1. Do I have enough data?
 2. Do neighboring nodes determine the property of a target node?
@@ -20,7 +21,6 @@ using very simple base classifiers to ask understandable questions.
     1. Python 3.5+
     2. Scikit Learn - which should install numpy, scipy, etc...
     3. Pandas
-    4. (for plotting) Seaborn
 
 * No wheels yet, so just download or clone this repository, and we'll go from there
 
@@ -28,21 +28,21 @@ using very simple base classifiers to ask understandable questions.
 ##### TL;DR
 * To **train** and save model
 
-    ```./know.py -v --td where/you/have/network.tsv --save```
+    ```./metaboloc.py -v --td where/you/have/network.tsv --save```
 
 * To **evaluate** the trained model with another network
 
-    ```./know.py -v --mod models/model.pkl --ed where/you/have/network2.tsv```
+    ```./metaboloc.py -v --mod models/model.pkl --ed where/you/have/network2.tsv```
 
 * To use trained model to **predict** nodes of another network with unknown labels
 
-    ```./know.py -v --mod models/model.pkl --pd where/you/have/network3.tsv```
+    ```./metaboloc.py -v --mod models/model.pkl --pd where/you/have/network3.tsv```
 
 ##### Let's first familiarize ourselves with where things are.
 * Open a **terminal** and navigate to the ``cd where/you/put/tonknows/`` folder. You should see a ``know.py`` file. That file runs everything.
 Please keep it there. Now try this:
 
-    ```python3 know.py --help```
+    ```python3 metaboloc.py --help```
 
     Now you should see an awful list of possible **options** to use. At this point, you probably also noticed a bunch
     of folders suddenly got created under ``tonknows/``: ``model/``, ``test/``, ``tmp/``.
@@ -51,7 +51,7 @@ Please keep it there. Now try this:
 ##### Nows let's create, train, and evaluate some test networks.
 * Enter this into the terminal while you are still in the ``tonknows/`` folder:
 
-    ```./know.py --test```
+    ```./metaboloc.py --test```
     
     Doing this creates 3 networks:
     1. Pure network ``test/pure_network.tsv``
@@ -60,7 +60,7 @@ Please keep it there. Now try this:
     
 * Lets try training on these networks. First, the pure network. Enter:
     
-    ```./know.py -v --td test/pure_network.tsv```
+    ```./metaboloc.py -v --td test/pure_network.tsv```
     
     By default, TonKnows will iterates through the entire dataset 3 times with a 10-fold CV each time. This not only
     helps evaluate the base classifier performances but also is necessary to train the final ensemble classifier and
@@ -73,7 +73,7 @@ Please keep it there. Now try this:
     
 * Let's try something more interesting, and let's use the mixed network:
     
-    ```./know.py -v --td test/mix_network.tsv --save --setcurrent```
+    ```./metaboloc.py -v --td test/mix_network.tsv --save --setcurrent```
     
     This network would not result in as high of a performance as the pure network, because about 40% of the labels are
     associated to random nodes. Thus it becomes very challenging to determine any real relationships.
@@ -83,7 +83,7 @@ Please keep it there. Now try this:
     
 * Let's evaluate the trained model using the pure network with ``--ed`` (**e**valuate **d**ata):
     
-    ```./know.py -v --ed test/pure_network.tsv --shell```
+    ```./metaboloc.py -v --ed test/pure_network.tsv --shell```
     
     Since there is a **-current** model, TonKnows just finds that and use it by default.
     
@@ -122,7 +122,7 @@ dictionary of results). Try enter:
 * At last, let's try to predict the properties of nodes that we don't have labels for with ``--pd`` (**p**redict
 **d**ata). Let's do:
     
-    ```./know.py -v --pd test/unknown_network.tsv```
+    ```./metaboloc.py -v --pd test/unknown_network.tsv```
     
     The **unknown_network.tsv** dataset contains labeled and unlabeled data. The previous **mix_data** is mixed again,
     then written to the ``unknown_network`` file twice: once with labels and once without labels.
