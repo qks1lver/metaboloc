@@ -94,10 +94,10 @@ class Model:
         self.clf_net = self.gen_rfc()
         self.unique_link2labels = None
         self.clf_opt = RandomForestClassifier(
-            n_estimators=0,
+            n_estimators=50,
             max_features=None,
-            min_impurity_decrease=0.001,
-            warm_start=True,
+            min_samples_leaf=3,
+            min_impurity_decrease=0.0001,
             n_jobs=os.cpu_count(),
         )
         self.clf_opt_trained = False
@@ -1287,7 +1287,7 @@ class Model:
         y = predictions['ytruth']
         X, y = self._check_train_labels(X, y)
 
-        self.clf_opt.n_estimators += 10
+        # self.clf_opt.n_estimators += 10   # This was for warm-start
         self.clf_opt.fit(X, y)
         self.clf_opt_trained = True
 
